@@ -1,0 +1,92 @@
+﻿@page "/add-shopping-carts-product"
+@layout MainLayout
+@inherits Net5Wasm.Pages.AddShoppingCartsProductComponent
+
+@using Radzen
+@using Radzen.Blazor
+@using Net5Wasm.Models.Net5Wasmconn
+@using Microsoft.AspNetCore.Identity;
+@using Net5Wasm.Models
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize]
+
+
+@inject Microsoft.Extensions.Localization.IStringLocalizer<AddShoppingCartsProduct> L
+<RadzenContent Container="main">
+  <ChildContent>
+    <div class="row">
+      <div class="col-md-12">
+        <RadzenTemplateForm Data="@shoppingcartsproduct" Visible="@(shoppingcartsproduct != null)" TItem="Net5Wasm.Models.Net5Wasmconn.ShoppingCartsProduct" Submit="@Form0Submit">
+          <ChildContent>
+            <div style="margin-bottom: 1rem" class="row">
+              <div class="col-md-3">
+                <RadzenLabel Text="@L["ShoppingCartIdLabel.Text"]" Component="ShoppingCartId" style="width: 100%">
+                </RadzenLabel>
+              </div>
+              <div class="col-md-9">
+                <RadzenDropDownDataGrid Data="@getShoppingCartsForShoppingCartIdResult" TextProperty="UserId" ValueProperty="Id" Placeholder="@L["ShoppingCartId.Placeholder"]" ShowSearch="false" Count="@getShoppingCartsForShoppingCartIdCount" style="display: block; width: 100%" @bind-Value="@(shoppingcartsproduct.ShoppingCartId)" Name="ShoppingCartId" LoadData="@ShoppingCartIdLoadData">
+                </RadzenDropDownDataGrid>
+                <RadzenRequiredValidator Component="ShoppingCartId" Text="@L["ShoppingCartIdRequiredValidator.Text"]" style="position: absolute" DefaultValue="0">
+                </RadzenRequiredValidator>
+              </div>
+            </div>
+            <div style="margin-bottom: 1rem" class="row">
+              <div class="col-md-3">
+                <RadzenLabel Text="@L["ProductIdLabel.Text"]" Component="ProductId" style="width: 100%">
+                </RadzenLabel>
+              </div>
+              <div class="col-md-9">
+                <RadzenDropDownDataGrid Data="@getProductsForProductIdResult" TextProperty="Name" ValueProperty="Id" Placeholder="@L["ProductId.Placeholder"]" ShowSearch="false" Count="@getProductsForProductIdCount" style="display: block; width: 100%" @bind-Value="@(shoppingcartsproduct.ProductId)" Name="ProductId" LoadData="@ProductIdLoadData">
+                </RadzenDropDownDataGrid>
+                <RadzenRequiredValidator Component="ProductId" Text="@L["ProductIdRequiredValidator.Text"]" style="position: absolute" DefaultValue="0">
+                </RadzenRequiredValidator>
+              </div>
+            </div>
+            <div style="margin-bottom: 1rem" class="row">
+              <div class="col-md-3">
+                <RadzenLabel Text="@L["CreatedOnLabel.Text"]" Component="CreatedOn" style="width: 100%">
+                </RadzenLabel>
+              </div>
+              <div class="col-md-9">
+                <RadzenDatePicker DateFormat="dd/MM/yyyy" style="display: block; width: 100%" @bind-Value="@(shoppingcartsproduct.CreatedOn)" Name="CreatedOn">
+                </RadzenDatePicker>
+                <RadzenRequiredValidator Component="CreatedOn" Text="@L["CreatedOnRequiredValidator.Text"]" style="position: absolute">
+                </RadzenRequiredValidator>
+              </div>
+            </div>
+            <div style="margin-bottom: 1rem" class="row">
+              <div class="col-md-3">
+                <RadzenLabel Text="@L["ModifiedOnLabel.Text"]" Component="ModifiedOn" style="width: 100%">
+                </RadzenLabel>
+              </div>
+              <div class="col-md-9">
+                <RadzenDatePicker DateFormat="dd/MM/yyyy" style="width: 100%" @bind-Value="@(shoppingcartsproduct.ModifiedOn)" Name="ModifiedOn">
+                </RadzenDatePicker>
+              </div>
+            </div>
+            <div style="margin-bottom: 1rem" class="row">
+              <div class="col-md-3">
+                <RadzenLabel Text="@L["QuantityLabel.Text"]" Component="Quantity" style="width: 100%">
+                </RadzenLabel>
+              </div>
+              <div class="col-md-9">
+                <RadzenNumeric style="display: block; width: 100%" @bind-Value="@(shoppingcartsproduct.Quantity)" Name="Quantity">
+                </RadzenNumeric>
+                <RadzenRequiredValidator Component="Quantity" Text="@L["QuantityRequiredValidator.Text"]" style="position: absolute">
+                </RadzenRequiredValidator>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col offset-sm-3">
+                <RadzenButton ButtonType="ButtonType.Submit" Icon="save" Text="@L["button1.Text"]" ButtonStyle="ButtonStyle.Primary">
+                </RadzenButton>
+                <RadzenButton ButtonStyle="ButtonStyle.Light" style="margin-left: 1rem" Text="@L["button2.Text"]" Click="@Button2Click">
+                </RadzenButton>
+              </div>
+            </div>
+          </ChildContent>
+        </RadzenTemplateForm>
+      </div>
+    </div>
+  </ChildContent>
+</RadzenContent>

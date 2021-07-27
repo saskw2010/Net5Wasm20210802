@@ -1,0 +1,69 @@
+﻿@page "/"
+@page "/addresses"
+@layout MainLayout
+@inherits Net5Wasm.Pages.AddressesComponent
+
+@using Radzen
+@using Radzen.Blazor
+@using Net5Wasm.Models.Net5Wasmconn
+@using Microsoft.AspNetCore.Identity;
+@using Net5Wasm.Models
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize]
+
+
+@inject Microsoft.Extensions.Localization.IStringLocalizer<Addresses> L
+<RadzenContent Container="main">
+  <ChildContent>
+    <div class="row">
+      <div class="col-md-12">
+        <RadzenButton Icon="add_circle_outline" style="margin-bottom: 10px" Text="@L["button0.Text"]" Click="@Button0Click">
+        </RadzenButton>
+        <RadzenSplitButton Icon="get_app" style="margin-left: 10px; margin-bottom: 10px" Text="@L["splitbutton0.Text"]" Click="@Splitbutton0Click">
+          <ChildContent>
+            <RadzenSplitButtonItem Text="@L["splitbutton0.excel.Text"]" Value="xlsx">
+            </RadzenSplitButtonItem>
+            <RadzenSplitButtonItem Text="@L["splitbutton0.csv.Text"]" Value="csv">
+            </RadzenSplitButtonItem>
+          </ChildContent>
+        </RadzenSplitButton>
+        <RadzenTextBox Placeholder="@L["textbox0.Placeholder"]" style="display: block; margin-bottom: 10px; width: 100%" Name="Textbox0" @oninput="@(async(args) => {search = $"{args.Value}";await grid0.GoToPage(0);await grid0.Reload();})">
+        </RadzenTextBox>
+        <RadzenDataGrid @ref="grid0" AllowFiltering="true" FilterMode="FilterMode.Advanced" AllowPaging="true" AllowSorting="true" Data="@getAddressesResult" Count="@getAddressesCount" TItem="Net5Wasm.Models.Net5Wasmconn.Address" LoadData="@Grid0LoadData" RowSelect="@Grid0RowSelect">
+          <Columns>
+            <RadzenDataGridColumn TItem="Net5Wasm.Models.Net5Wasmconn.Address" Property="Id" Title="@L["grid0.Id.Title"]">
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="Net5Wasm.Models.Net5Wasmconn.Address" Property="CreatedOn" FormatString="{0:dd/MM/yyyy}" Title="@L["grid0.CreatedOn.Title"]">
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="Net5Wasm.Models.Net5Wasmconn.Address" Property="ModifiedOn" FormatString="{0:dd/MM/yyyy}" Title="@L["grid0.ModifiedOn.Title"]">
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="Net5Wasm.Models.Net5Wasmconn.Address" Property="IsDeleted" Title="@L["grid0.IsDeleted.Title"]">
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="Net5Wasm.Models.Net5Wasmconn.Address" Property="DeletedOn" FormatString="{0:dd/MM/yyyy}" Title="@L["grid0.DeletedOn.Title"]">
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="Net5Wasm.Models.Net5Wasmconn.Address" Property="Country" Title="@L["grid0.Country.Title"]">
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="Net5Wasm.Models.Net5Wasmconn.Address" Property="State" Title="@L["grid0.State.Title"]">
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="Net5Wasm.Models.Net5Wasmconn.Address" Property="City" Title="@L["grid0.City.Title"]">
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="Net5Wasm.Models.Net5Wasmconn.Address" Property="Description" Title="@L["grid0.Description.Title"]">
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="Net5Wasm.Models.Net5Wasmconn.Address" Property="PostalCode" Title="@L["grid0.PostalCode.Title"]">
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="Net5Wasm.Models.Net5Wasmconn.Address" Property="PhoneNumber" Title="@L["grid0.PhoneNumber.Title"]">
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="Net5Wasm.Models.Net5Wasmconn.Address" Property="UserId" Title="@L["grid0.UserId.Title"]">
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="Net5Wasm.Models.Net5Wasmconn.Address" Filterable="false" Sortable="false" Width="70px" TextAlign="TextAlign.Center">
+              <Template Context="net5WasmModelsNet5WasmconnAddress">
+                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@((args) =>GridDeleteButtonClick(args, net5WasmModelsNet5WasmconnAddress))" @onclick:stopPropagation="true">
+                </RadzenButton>
+              </Template>
+            </RadzenDataGridColumn>
+          </Columns>
+        </RadzenDataGrid>
+      </div>
+    </div>
+  </ChildContent>
+</RadzenContent>

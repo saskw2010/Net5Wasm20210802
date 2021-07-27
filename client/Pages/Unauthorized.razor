@@ -1,0 +1,26 @@
+﻿@page "/unauthorized"
+@layout MainLayout
+@inherits Net5Wasm.Pages.UnauthorizedComponent
+
+@using Radzen
+@using Radzen.Blazor
+@using Net5Wasm.Models.Net5Wasmconn
+@using Microsoft.AspNetCore.Identity;
+@using Net5Wasm.Models
+@using Microsoft.AspNetCore.Authorization
+
+
+@inject Microsoft.Extensions.Localization.IStringLocalizer<Unauthorized> L
+<RadzenContent Container="main">
+  <ChildContent>
+    <RadzenHeading Size="H1" Text="@L["pageTitle.Text"]">
+    </RadzenHeading>
+    <div class="row">
+      <div class="col-md-12">
+        <RadzenHtml>
+          The current user is not authorized to see this page.
+        </RadzenHtml>
+      </div>
+    </div>
+  </ChildContent>
+</RadzenContent>

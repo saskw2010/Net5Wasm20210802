@@ -1,0 +1,61 @@
+﻿@page "/Uploadpage"
+@layout MainLayout
+@inject HttpClient Http
+@using Net5Wasm.Api.Models;
+
+<div>
+    <InputFile OnChange="@OnFileSelection"></InputFile>
+    <div class="row">
+        @foreach (var imgurlname in imgUrlsname)
+        {
+        <input  value="@imgurlname" type="text" />
+         
+        }
+    </div>
+
+    <div class="row">
+        @foreach (var imgUrl in imgUrls)
+        {
+<img src="@imgUrl">
+        
+        }
+    </div>
+    <div>
+        <button type="button" class="btn btn-primary" @onclick="SaveToServer">Upload</button>
+    </div>
+</div>
+
+
+
+@code{ List<string> imgUrls = new List<string>();
+    List<string> imgUrlsname = new List<string>();
+    List<FileData> fileData = new List<FileData>();
+    private async Task OnFileSelection(InputFileChangeEventArgs e)
+    {
+        foreach (IBrowserFile imgFile in e.GetMultipleFiles(5))
+        {
+            var buffers = new byte[imgFile.Size];
+            await imgFile.OpenReadStream().ReadAsync(buffers);
+            string imageType = imgFile.ContentType;
+            string imgUrl = $"data:{imageType};base64,{Convert.ToBase64String(buffers)}";
+            string imgurlname = imgFile.Name;
+            imgUrls.Add(imgUrl);
+            imgUrlsname.Add(imgurlname);
+
+            fileData.Add(new FileData
+            {
+                Data = buffers,
+                FileType = imageType,
+                Size = imgFile.Size
+            });
+        }
+    }
+
+    private async Task SaveToServer()
+    {
+        if (fileData.Count > 0)
+        {
+            var payload = new SaveFile { Files = fileData };
+            await Http.PostAsJsonAsync("/api/FileUpload/save-file-to-physicallocation", payload);
+        }
+    } }

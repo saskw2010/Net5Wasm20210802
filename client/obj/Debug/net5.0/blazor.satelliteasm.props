@@ -1,0 +1,9 @@
+﻿<SatelliteAssembly>
+  <Assembly Name="obj\Debug\net5.0\ar-KW\Net5Wasm.Client.resources.dll" Culture="ar-KW" DestinationSubDirectory="ar-KW\" />
+  <Assembly Name="obj\Debug\net5.0\en-US\Net5Wasm.Client.resources.dll" Culture="en-US" DestinationSubDirectory="en-US\" />
+  <Assembly Name="obj\Debug\net5.0\es-ES\Net5Wasm.Client.resources.dll" Culture="es-ES" DestinationSubDirectory="es-ES\" />
+  <Assembly Name="obj\Debug\net5.0\fr-CA\Net5Wasm.Client.resources.dll" Culture="fr-CA" DestinationSubDirectory="fr-CA\" />
+  <Assembly Name="obj\Debug\net5.0\it-IT\Net5Wasm.Client.resources.dll" Culture="it-IT" DestinationSubDirectory="it-IT\" />
+  <Assembly Name="obj\Debug\net5.0\tr-TR\Net5Wasm.Client.resources.dll" Culture="tr-TR" DestinationSubDirectory="tr-TR\" />
+  <Assembly Name="obj\Debug\net5.0\zh-CHS\Net5Wasm.Client.resources.dll" Culture="zh-CHS" DestinationSubDirectory="zh-CHS\" />
+</SatelliteAssembly>

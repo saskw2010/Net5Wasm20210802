@@ -1,0 +1,71 @@
+﻿@page "/products"
+@layout MainLayout
+@inherits Net5Wasm.Pages.ProductsComponent
+
+@using Radzen
+@using Radzen.Blazor
+@using Net5Wasm.Models.Net5Wasmconn
+@using Microsoft.AspNetCore.Identity;
+@using Net5Wasm.Models
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize]
+
+
+@inject Microsoft.Extensions.Localization.IStringLocalizer<Products> L
+<RadzenContent Container="main">
+  <ChildContent>
+    <RadzenHeading Size="H1" Text="@L["pageTitle.Text"]">
+    </RadzenHeading>
+    <div class="row">
+      <div class="col-md-12">
+        <RadzenButton Icon="add_circle_outline" style="margin-bottom: 10px" Text="@L["button0.Text"]" Click="@Button0Click">
+        </RadzenButton>
+        <RadzenSplitButton Icon="get_app" style="margin-left: 10px; margin-bottom: 10px" Text="@L["splitbutton0.Text"]" Click="@Splitbutton0Click">
+          <ChildContent>
+            <RadzenSplitButtonItem Text="@L["splitbutton0.excel.Text"]" Value="xlsx">
+            </RadzenSplitButtonItem>
+            <RadzenSplitButtonItem Text="@L["splitbutton0.csv.Text"]" Value="csv">
+            </RadzenSplitButtonItem>
+          </ChildContent>
+        </RadzenSplitButton>
+        <RadzenTextBox Placeholder="@L["textbox0.Placeholder"]" style="display: block; margin-bottom: 10px; width: 100%" Name="Textbox0" @oninput="@(async(args) => {search = $"{args.Value}";await grid0.GoToPage(0);await grid0.Reload();})">
+        </RadzenTextBox>
+        <RadzenDataGrid @ref="grid0" AllowFiltering="true" FilterMode="FilterMode.Advanced" AllowPaging="true" AllowSorting="true" Data="@getProductsResult" Count="@getProductsCount" TItem="Net5Wasm.Models.Net5Wasmconn.Product" LoadData="@Grid0LoadData" RowSelect="@Grid0RowSelect">
+          <Columns>
+            <RadzenDataGridColumn TItem="Net5Wasm.Models.Net5Wasmconn.Product" Property="Id" Title="@L["grid0.Id.Title"]">
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="Net5Wasm.Models.Net5Wasmconn.Product" Property="CreatedOn" FormatString="{0:dd/MM/yyyy}" Title="@L["grid0.CreatedOn.Title"]">
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="Net5Wasm.Models.Net5Wasmconn.Product" Property="ModifiedOn" FormatString="{0:dd/MM/yyyy}" Title="@L["grid0.ModifiedOn.Title"]">
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="Net5Wasm.Models.Net5Wasmconn.Product" Property="IsDeleted" Title="@L["grid0.IsDeleted.Title"]">
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="Net5Wasm.Models.Net5Wasmconn.Product" Property="DeletedOn" FormatString="{0:dd/MM/yyyy}" Title="@L["grid0.DeletedOn.Title"]">
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="Net5Wasm.Models.Net5Wasmconn.Product" Property="Name" Title="@L["grid0.Name.Title"]">
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="Net5Wasm.Models.Net5Wasmconn.Product" Property="Description" Title="@L["grid0.Description.Title"]">
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="Net5Wasm.Models.Net5Wasmconn.Product" Property="ImageSource" Title="@L["grid0.ImageSource.Title"]">
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="Net5Wasm.Models.Net5Wasmconn.Product" Property="Quantity" Title="@L["grid0.Quantity.Title"]">
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="Net5Wasm.Models.Net5Wasmconn.Product" Property="Price" Title="@L["grid0.Price.Title"]">
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="Net5Wasm.Models.Net5Wasmconn.Product" Property="CategoryId" SortProperty="Category.Name" FilterProperty="Category.Name" Title="@L["grid0.CategoryId.Title"]">
+              <Template Context="data">
+              @(data.Category?.Name)
+              </Template>
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="Net5Wasm.Models.Net5Wasmconn.Product" Filterable="false" Sortable="false" Width="70px" TextAlign="TextAlign.Center">
+              <Template Context="net5WasmModelsNet5WasmconnProduct">
+                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@((args) =>GridDeleteButtonClick(args, net5WasmModelsNet5WasmconnProduct))" @onclick:stopPropagation="true">
+                </RadzenButton>
+              </Template>
+            </RadzenDataGridColumn>
+          </Columns>
+        </RadzenDataGrid>
+      </div>
+    </div>
+  </ChildContent>
+</RadzenContent>

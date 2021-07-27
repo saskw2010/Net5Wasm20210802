@@ -1,0 +1,22 @@
+﻿@page "/uploadfilesandsave"
+@layout MainLayout
+@inherits Net5Wasm.Pages.UploadfilesandsaveComponent
+
+@using Radzen
+@using Radzen.Blazor
+@using Net5Wasm.Models.Net5Wasmconn
+@using Microsoft.AspNetCore.Identity;
+@using Net5Wasm.Models
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize]
+
+
+@inject Microsoft.Extensions.Localization.IStringLocalizer<Uploadfilesandsave> L
+<RadzenContent Container="main">
+  <ChildContent>
+    <RadzenHeading Size="H1" Text="@L["pageTitle.Text"]">
+    </RadzenHeading>
+    <RadzenFileInput ChooseText="@L["InputFile.ChooseText"]" style="width: 693.609375px" Name="InputFile" TValue="dynamic">
+    </RadzenFileInput>
+  </ChildContent>
+</RadzenContent>

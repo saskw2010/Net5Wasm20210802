@@ -1,0 +1,62 @@
+﻿@page "/shopping-carts-products"
+@layout MainLayout
+@inherits Net5Wasm.Pages.ShoppingCartsProductsComponent
+
+@using Radzen
+@using Radzen.Blazor
+@using Net5Wasm.Models.Net5Wasmconn
+@using Microsoft.AspNetCore.Identity;
+@using Net5Wasm.Models
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize]
+
+
+@inject Microsoft.Extensions.Localization.IStringLocalizer<ShoppingCartsProducts> L
+<RadzenContent Container="main">
+  <ChildContent>
+    <RadzenHeading Size="H1" Text="@L["pageTitle.Text"]">
+    </RadzenHeading>
+    <div class="row">
+      <div class="col-md-12">
+        <RadzenButton Icon="add_circle_outline" style="margin-bottom: 10px" Text="@L["button0.Text"]" Click="@Button0Click">
+        </RadzenButton>
+        <RadzenSplitButton Icon="get_app" style="margin-left: 10px; margin-bottom: 10px" Text="@L["splitbutton0.Text"]" Click="@Splitbutton0Click">
+          <ChildContent>
+            <RadzenSplitButtonItem Text="@L["splitbutton0.excel.Text"]" Value="xlsx">
+            </RadzenSplitButtonItem>
+            <RadzenSplitButtonItem Text="@L["splitbutton0.csv.Text"]" Value="csv">
+            </RadzenSplitButtonItem>
+          </ChildContent>
+        </RadzenSplitButton>
+        <RadzenTextBox Placeholder="@L["textbox0.Placeholder"]" style="display: block; margin-bottom: 10px; width: 100%" Name="Textbox0" @oninput="@(async(args) => {search = $"{args.Value}";await grid0.GoToPage(0);await grid0.Reload();})">
+        </RadzenTextBox>
+        <RadzenDataGrid @ref="grid0" AllowFiltering="true" FilterMode="FilterMode.Advanced" AllowPaging="true" AllowSorting="true" Data="@getShoppingCartsProductsResult" Count="@getShoppingCartsProductsCount" TItem="Net5Wasm.Models.Net5Wasmconn.ShoppingCartsProduct" LoadData="@Grid0LoadData" RowSelect="@Grid0RowSelect">
+          <Columns>
+            <RadzenDataGridColumn TItem="Net5Wasm.Models.Net5Wasmconn.ShoppingCartsProduct" Property="ShoppingCartId" SortProperty="ShoppingCart.UserId" FilterProperty="ShoppingCart.UserId" Title="@L["grid0.ShoppingCartId.Title"]">
+              <Template Context="data">
+              @(data.ShoppingCart?.UserId)
+              </Template>
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="Net5Wasm.Models.Net5Wasmconn.ShoppingCartsProduct" Property="ProductId" SortProperty="Product.Name" FilterProperty="Product.Name" Title="@L["grid0.ProductId.Title"]">
+              <Template Context="data">
+              @(data.Product?.Name)
+              </Template>
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="Net5Wasm.Models.Net5Wasmconn.ShoppingCartsProduct" Property="CreatedOn" FormatString="{0:dd/MM/yyyy}" Title="@L["grid0.CreatedOn.Title"]">
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="Net5Wasm.Models.Net5Wasmconn.ShoppingCartsProduct" Property="ModifiedOn" FormatString="{0:dd/MM/yyyy}" Title="@L["grid0.ModifiedOn.Title"]">
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="Net5Wasm.Models.Net5Wasmconn.ShoppingCartsProduct" Property="Quantity" Title="@L["grid0.Quantity.Title"]">
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="Net5Wasm.Models.Net5Wasmconn.ShoppingCartsProduct" Filterable="false" Sortable="false" Width="70px" TextAlign="TextAlign.Center">
+              <Template Context="net5WasmModelsNet5WasmconnShoppingCartsProduct">
+                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@((args) =>GridDeleteButtonClick(args, net5WasmModelsNet5WasmconnShoppingCartsProduct))" @onclick:stopPropagation="true">
+                </RadzenButton>
+              </Template>
+            </RadzenDataGridColumn>
+          </Columns>
+        </RadzenDataGrid>
+      </div>
+    </div>
+  </ChildContent>
+</RadzenContent>

@@ -1,0 +1,189 @@
+﻿@page "/edit-category/{Id}"
+@layout MainLayout
+@inherits Net5Wasm.Pages.EditCategoryComponent
+
+@using Radzen
+@using Radzen.Blazor
+@using Net5Wasm.Models.Net5Wasmconn
+@using Microsoft.AspNetCore.Identity;
+@using Net5Wasm.Models
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize]
+
+@inject HttpClient Http
+@using Net5Wasm.Api.Models;
+
+
+@inject Microsoft.Extensions.Localization.IStringLocalizer<EditCategory> L
+<RadzenContent Container="main">
+  <ChildContent>
+    <div  class="row">
+      <div class="col-md-9">
+        <RadzenLabel style="font-weight: bold" Text="@L["closeLabel.Text"]" Visible="@(!canEdit)">
+        </RadzenLabel>
+      </div>
+      <div class="col-md-3">
+        <RadzenButton ButtonStyle="ButtonStyle.Secondary" style="margin-bottom: 20px" Text="@L["closeButton.Text"]" Visible="@(!canEdit)" Click="@CloseButtonClick">
+        </RadzenButton>
+      </div>
+    </div>
+    <div  class="row">
+      <div class="col-md-9">
+        <RadzenLabel style="font-weight: bold" Text="@L["label0.Text"]" Visible="@hasChanges">
+        </RadzenLabel>
+      </div>
+      <div class="col-md-3">
+        <RadzenButton ButtonStyle="ButtonStyle.Secondary" Icon="autorenew" style="margin-bottom: 20px" Text="@L["button0.Text"]" Visible="@hasChanges" Click="@Button0Click">
+        </RadzenButton>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <RadzenTemplateForm Data="@category" TItem="Net5Wasm.Models.Net5Wasmconn.Category" Visible="@(category != null && canEdit)" Submit="@Form0Submit">
+          <ChildContent>
+            <div style="margin-bottom: 1rem" class="row">
+              <div class="col-md-3">
+                <RadzenLabel Component="CreatedOn" style="width: 100%" Text="@L["CreatedOnLabel.Text"]">
+                </RadzenLabel>
+              </div>
+              <div class="col-md-9">
+                <RadzenDatePicker DateFormat="dd/MM/yyyy" style="display: block; width: 100%" @bind-Value="@(category.CreatedOn)" Name="CreatedOn">
+                </RadzenDatePicker>
+                <RadzenRequiredValidator Component="CreatedOn" style="position: absolute" Text="@L["CreatedOnRequiredValidator.Text"]">
+                </RadzenRequiredValidator>
+              </div>
+            </div>
+            <div style="margin-bottom: 1rem" class="row">
+              <div class="col-md-3">
+                <RadzenLabel Component="ModifiedOn" style="width: 100%" Text="@L["ModifiedOnLabel.Text"]">
+                </RadzenLabel>
+              </div>
+              <div class="col-md-9">
+                <RadzenDatePicker DateFormat="dd/MM/yyyy" style="width: 100%" @bind-Value="@(category.ModifiedOn)" Name="ModifiedOn">
+                </RadzenDatePicker>
+              </div>
+            </div>
+            <div style="margin-bottom: 1rem" class="row">
+              <div class="col-md-3">
+                <RadzenLabel Component="IsDeleted" style="width: 100%" Text="@L["IsDeletedLabel.Text"]">
+                </RadzenLabel>
+              </div>
+              <div class="col-md-9">
+                <RadzenCheckBox @bind-Value="@(category.IsDeleted)" Name="IsDeleted">
+                </RadzenCheckBox>
+              </div>
+            </div>
+            <div style="margin-bottom: 1rem" class="row">
+              <div class="col-md-3">
+                <RadzenLabel Component="DeletedOn" style="width: 100%" Text="@L["DeletedOnLabel.Text"]">
+                </RadzenLabel>
+              </div>
+              <div class="col-md-9">
+                <RadzenDatePicker DateFormat="dd/MM/yyyy" style="width: 100%" @bind-Value="@(category.DeletedOn)" Name="DeletedOn">
+                </RadzenDatePicker>
+              </div>
+            </div>
+            <div style="margin-bottom: 1rem" class="row">
+              <div class="col-md-3">
+                <RadzenLabel Component="Name" style="width: 100%" Text="@L["NameLabel.Text"]">
+                </RadzenLabel>
+              </div>
+              <div class="col-md-9">
+                <RadzenTextBox MaxLength="50" style="display: block; width: 100%" @bind-Value="@(category.Name)" Name="Name">
+                </RadzenTextBox>
+                <RadzenRequiredValidator Component="Name" style="position: absolute" Text="@L["NameRequiredValidator.Text"]">
+                </RadzenRequiredValidator>
+              </div>
+            </div>
+            <div style="margin-bottom: 1rem" class="row">
+              <div class="col-md-3">
+                <RadzenLabel Component="ImageSource" style="width: 100%" Text="@L["ImageSourceLabel.Text"]">
+                </RadzenLabel>
+              </div>
+              <div class="col-md-9">
+                <RadzenTextBox MaxLength="2048" style="width: 100%" @bind-Value="@(category.ImageSource)" Name="ImageSource">
+                </RadzenTextBox>
+                <RadzenFileInput style="width: 200.609375px" Name="FileInput0" TValue="dynamic">
+                </RadzenFileInput>
+                <RadzenUpload style="width: 264.609375px">
+                </RadzenUpload>
+              </div>
+            </div>
+ <div class="row">
+<div>
+    <InputFile OnChange="@OnFileSelection"></InputFile>
+    <div class="row">
+        @foreach (var imgurlname in imgUrlsname)
+        {
+        <input  value="@imgurlname" type="text" />
+         
+        }
+    </div>
+
+    <div class="row">
+        @foreach (var imgUrl in imgUrls)
+        {
+<img src="@imgUrl">
+        
+        }
+    </div>
+    <div>
+        <button type="button" class="btn btn-primary" @onclick="SaveToServer">Upload</button>
+    </div>
+</div>
+</div>
+
+
+
+
+
+
+
+
+            <div class="row">
+              <div class="col offset-sm-3">
+                <RadzenButton ButtonStyle="ButtonStyle.Primary" ButtonType="ButtonType.Submit" Icon="save" Text="@L["button3.Text"]">
+                </RadzenButton>
+                <RadzenButton ButtonStyle="ButtonStyle.Light" style="margin-left: 1rem" Text="@L["button4.Text"]" Click="@Button4Click">
+                </RadzenButton>
+              </div>
+            </div>
+          </ChildContent>
+        </RadzenTemplateForm>
+      </div>
+    </div>
+  </ChildContent>
+</RadzenContent>
+@code{ List<string> imgUrls = new List<string>();
+    List<string> imgUrlsname = new List<string>();
+    List<FileData> fileData = new List<FileData>();
+    private async Task OnFileSelection(InputFileChangeEventArgs e)
+    {
+        foreach (IBrowserFile imgFile in e.GetMultipleFiles(5))
+        {
+            var buffers = new byte[imgFile.Size];
+            await imgFile.OpenReadStream().ReadAsync(buffers);
+            string imageType = imgFile.ContentType;
+            string imgUrl = $"data:{imageType};base64,{Convert.ToBase64String(buffers)}";
+            string imgurlname = imgFile.Name;
+            category.ImageSource=imgFile.Name;
+            imgUrls.Add(imgUrl);
+            imgUrlsname.Add(imgurlname);
+
+            fileData.Add(new FileData
+            {
+                Data = buffers,
+                FileType = imageType,
+                Size = imgFile.Size
+            });
+        }
+    }
+
+    private async Task SaveToServer()
+    {
+        if (fileData.Count > 0)
+        {
+            var payload = new SaveFile { Files = fileData };
+            await Http.PostAsJsonAsync("/api/FileUpload/save-file-to-physicallocation", payload);
+        }
+    } }

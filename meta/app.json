@@ -1,0 +1,132 @@
+{
+  "cssFiles": [],
+  "dataSources": [
+    "net5wasmconn"
+  ],
+  "generator": "@radzen/blazor-server",
+  "https": true,
+  "ignore": [
+    ""
+  ],
+  "javaScriptFiles": [],
+  "layouts": [
+    "Login",
+    "Main"
+  ],
+  "localization": {
+    "cultures": [
+      {
+        "text": "Arabic - Kuwait",
+        "value": "ar-KW"
+      },
+      {
+        "text": "English - United States",
+        "value": "en-US"
+      },
+      {
+        "text": "French - Canada",
+        "value": "fr-CA"
+      },
+      {
+        "text": "Italian - Italy",
+        "value": "it-IT"
+      },
+      {
+        "text": "Spanish - Spain",
+        "value": "es-ES"
+      },
+      {
+        "text": "Chinese (Simplified)",
+        "value": "zh-CHS"
+      },
+      {
+        "text": "Turkish - Turkey",
+        "value": "tr-TR"
+      }
+    ],
+    "defaultCulture": {
+      "text": "English - United States",
+      "value": "en-US"
+    }
+  },
+  "logo": "",
+  "name": "Net5Wasm",
+  "namespaces": [],
+  "navigation": [
+    "Addresses",
+    "Categories",
+    "Orders",
+    "Orders Products",
+    "Products",
+    "Shopping Carts",
+    "Shopping Carts Products",
+    "Wishlists",
+    "Wishlists Products",
+    "uploadfilesandsave"
+  ],
+  "pages": [
+    "Addresses",
+    "Add Address",
+    "Edit Address",
+    "Categories",
+    "Add Category",
+    "Edit Category",
+    "Orders",
+    "Add Order",
+    "Edit Order",
+    "Orders Products",
+    "Add Orders Product",
+    "Edit Orders Product",
+    "Products",
+    "Add Product",
+    "Edit Product",
+    "Shopping Carts",
+    "Add Shopping Cart",
+    "Edit Shopping Cart",
+    "Shopping Carts Products",
+    "Add Shopping Carts Product",
+    "Edit Shopping Carts Product",
+    "Wishlists",
+    "Add Wishlist",
+    "Edit Wishlist",
+    "Wishlists Products",
+    "Add Wishlists Product",
+    "Edit Wishlists Product",
+    "Login",
+    "Register Application User",
+    "Application Users",
+    "Application Roles",
+    "Add Application Role",
+    "Add Application User",
+    "Profile",
+    "Unauthorized",
+    "Edit Application User",
+    "uploadfilesandsave"
+  ],
+  "port": 8000,
+  "pwa": true,
+  "security": {
+    "autoGeneratePages": true,
+    "dataSource": "net5wasmconn",
+    "duration": 5,
+    "emailConfirmation": false,
+    "layout": "Main",
+    "loginLayout": "Login",
+    "loginPage": "Login",
+    "provider": "default",
+    "sessionRefresh": false,
+    "smtpFrom": "",
+    "smtpPassword": "",
+    "smtpSSL": false,
+    "smtpServer": "",
+    "smtpUser": ""
+  },
+  "serverLang": "cs",
+  "serverPort": 5000,
+  "serverProject": true,
+  "serverVersion": "5",
+  "startPage": "Addresses",
+  "theme": "humanistic",
+  "title": "Net5Wasm",
+  "wasm": true
+}

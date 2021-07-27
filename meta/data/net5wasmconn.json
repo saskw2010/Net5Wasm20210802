@@ -1,0 +1,2059 @@
+{
+  "info": {
+    "title": "net5wasmconn",
+    "x-type": "odata",
+    "x-connector": "mssql",
+    "x-connector-version": 15,
+    "x-concurrency": true
+  },
+  "definitions": {
+    "Address": {
+      "x-table": "dbo.Addresses",
+      "resource": "Addresses",
+      "required": [
+        "CreatedOn",
+        "Country",
+        "State",
+        "City",
+        "Description",
+        "PostalCode",
+        "PhoneNumber",
+        "UserId"
+      ],
+      "properties": {
+        "Id": {
+          "x-key": true,
+          "x-identity": true,
+          "x-nullable": false,
+          "x-precision": 10,
+          "type": "integer",
+          "x-navigation": [
+            {
+              "inversePropertyName": "Address",
+              "name": "Orders",
+              "type": "Order"
+            }
+          ]
+        },
+        "CreatedOn": {
+          "x-nullable": false,
+          "type": "string",
+          "format": "date-time",
+          "x-datetime": "datetime2"
+        },
+        "ModifiedOn": {
+          "type": "string",
+          "format": "date-time",
+          "x-datetime": "datetime2"
+        },
+        "IsDeleted": {
+          "x-nullable": false,
+          "type": "boolean"
+        },
+        "DeletedOn": {
+          "type": "string",
+          "format": "date-time",
+          "x-datetime": "datetime2"
+        },
+        "Country": {
+          "x-nullable": false,
+          "type": "string",
+          "length": 255
+        },
+        "State": {
+          "x-nullable": false,
+          "type": "string",
+          "length": 255
+        },
+        "City": {
+          "x-nullable": false,
+          "type": "string",
+          "length": 255
+        },
+        "Description": {
+          "x-nullable": false,
+          "type": "string",
+          "length": 1000
+        },
+        "PostalCode": {
+          "x-nullable": false,
+          "type": "string",
+          "length": 10
+        },
+        "PhoneNumber": {
+          "x-nullable": false,
+          "type": "string",
+          "length": 20
+        },
+        "UserId": {
+          "x-nullable": false,
+          "type": "string",
+          "length": 450
+        },
+        "Orders": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Order"
+          }
+        }
+      }
+    },
+    "Category": {
+      "x-table": "dbo.Categories",
+      "resource": "Categories",
+      "required": [
+        "CreatedOn",
+        "Name"
+      ],
+      "properties": {
+        "Id": {
+          "x-key": true,
+          "x-identity": true,
+          "x-nullable": false,
+          "x-precision": 10,
+          "type": "integer",
+          "x-navigation": [
+            {
+              "inversePropertyName": "Category",
+              "name": "Products",
+              "type": "Product"
+            }
+          ]
+        },
+        "CreatedOn": {
+          "x-nullable": false,
+          "type": "string",
+          "format": "date-time",
+          "x-datetime": "datetime2"
+        },
+        "ModifiedOn": {
+          "type": "string",
+          "format": "date-time",
+          "x-datetime": "datetime2"
+        },
+        "IsDeleted": {
+          "x-nullable": false,
+          "type": "boolean"
+        },
+        "DeletedOn": {
+          "type": "string",
+          "format": "date-time",
+          "x-datetime": "datetime2"
+        },
+        "Name": {
+          "x-nullable": false,
+          "type": "string",
+          "length": 50
+        },
+        "ImageSource": {
+          "type": "string",
+          "length": 2048
+        },
+        "Products": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Product"
+          }
+        }
+      }
+    },
+    "Order": {
+      "x-table": "dbo.Orders",
+      "resource": "Orders",
+      "required": [
+        "Id",
+        "CreatedOn",
+        "UserId",
+        "DeliveryAddressId"
+      ],
+      "properties": {
+        "Id": {
+          "x-key": true,
+          "x-nullable": false,
+          "type": "string",
+          "length": 450,
+          "x-navigation": [
+            {
+              "inversePropertyName": "Order",
+              "name": "OrdersProducts",
+              "type": "OrdersProduct"
+            }
+          ]
+        },
+        "CreatedOn": {
+          "x-nullable": false,
+          "type": "string",
+          "format": "date-time",
+          "x-datetime": "datetime2"
+        },
+        "ModifiedOn": {
+          "type": "string",
+          "format": "date-time",
+          "x-datetime": "datetime2"
+        },
+        "UserId": {
+          "x-nullable": false,
+          "type": "string",
+          "length": 450
+        },
+        "Address": {
+          "type": "object",
+          "$ref": "#/definitions/Address"
+        },
+        "DeliveryAddressId": {
+          "x-nullable": false,
+          "x-precision": 10,
+          "type": "integer",
+          "x-foreignKey": {
+            "parentTable": "Addresses",
+            "parentEntityType": "Address",
+            "type": "Address",
+            "principalKey": "Id",
+            "name": "Address",
+            "textProperty": "Country",
+            "navigationProperty": "Orders"
+          }
+        },
+        "OrdersProducts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/OrdersProduct"
+          }
+        }
+      }
+    },
+    "OrdersProduct": {
+      "x-table": "dbo.OrdersProducts",
+      "resource": "OrdersProducts",
+      "required": [
+        "OrderId",
+        "ProductId",
+        "CreatedOn",
+        "Quantity"
+      ],
+      "properties": {
+        "Order": {
+          "type": "object",
+          "$ref": "#/definitions/Order"
+        },
+        "OrderId": {
+          "x-nullable": false,
+          "type": "string",
+          "length": 450,
+          "x-key": true,
+          "x-foreignKey": {
+            "parentTable": "Orders",
+            "parentEntityType": "Order",
+            "type": "Order",
+            "principalKey": "Id",
+            "name": "Order",
+            "textProperty": "UserId",
+            "navigationProperty": "OrdersProducts"
+          }
+        },
+        "Product": {
+          "type": "object",
+          "$ref": "#/definitions/Product"
+        },
+        "ProductId": {
+          "x-nullable": false,
+          "x-precision": 10,
+          "type": "integer",
+          "x-key": true,
+          "x-foreignKey": {
+            "parentTable": "Products",
+            "parentEntityType": "Product",
+            "type": "Product",
+            "principalKey": "Id",
+            "name": "Product",
+            "textProperty": "Name",
+            "navigationProperty": "OrdersProducts"
+          }
+        },
+        "CreatedOn": {
+          "x-nullable": false,
+          "type": "string",
+          "format": "date-time",
+          "x-datetime": "datetime2"
+        },
+        "ModifiedOn": {
+          "type": "string",
+          "format": "date-time",
+          "x-datetime": "datetime2"
+        },
+        "Quantity": {
+          "x-nullable": false,
+          "x-precision": 10,
+          "type": "integer"
+        }
+      }
+    },
+    "Product": {
+      "x-table": "dbo.Products",
+      "resource": "Products",
+      "required": [
+        "CreatedOn",
+        "Name",
+        "ImageSource",
+        "Quantity",
+        "Price",
+        "CategoryId"
+      ],
+      "properties": {
+        "Id": {
+          "x-key": true,
+          "x-identity": true,
+          "x-nullable": false,
+          "x-precision": 10,
+          "type": "integer",
+          "x-navigation": [
+            {
+              "inversePropertyName": "Product",
+              "name": "ShoppingCartsProducts",
+              "type": "ShoppingCartsProduct"
+            },
+            {
+              "inversePropertyName": "Product",
+              "name": "WishlistsProducts",
+              "type": "WishlistsProduct"
+            },
+            {
+              "inversePropertyName": "Product",
+              "name": "OrdersProducts",
+              "type": "OrdersProduct"
+            }
+          ]
+        },
+        "CreatedOn": {
+          "x-nullable": false,
+          "type": "string",
+          "format": "date-time",
+          "x-datetime": "datetime2"
+        },
+        "ModifiedOn": {
+          "type": "string",
+          "format": "date-time",
+          "x-datetime": "datetime2"
+        },
+        "IsDeleted": {
+          "x-nullable": false,
+          "type": "boolean"
+        },
+        "DeletedOn": {
+          "type": "string",
+          "format": "date-time",
+          "x-datetime": "datetime2"
+        },
+        "Name": {
+          "x-nullable": false,
+          "type": "string",
+          "length": 50
+        },
+        "Description": {
+          "type": "string",
+          "length": 1000
+        },
+        "ImageSource": {
+          "x-nullable": false,
+          "type": "string",
+          "length": 2048
+        },
+        "Quantity": {
+          "x-nullable": false,
+          "x-precision": 10,
+          "type": "integer"
+        },
+        "Price": {
+          "x-nullable": false,
+          "x-precision": 18,
+          "x-scale": 2,
+          "type": "number",
+          "format": "decimal"
+        },
+        "Category": {
+          "type": "object",
+          "$ref": "#/definitions/Category"
+        },
+        "CategoryId": {
+          "x-nullable": false,
+          "x-precision": 10,
+          "type": "integer",
+          "x-foreignKey": {
+            "parentTable": "Categories",
+            "parentEntityType": "Category",
+            "type": "Category",
+            "principalKey": "Id",
+            "name": "Category",
+            "textProperty": "Name",
+            "navigationProperty": "Products"
+          }
+        },
+        "ShoppingCartsProducts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ShoppingCartsProduct"
+          }
+        },
+        "WishlistsProducts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/WishlistsProduct"
+          }
+        },
+        "OrdersProducts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/OrdersProduct"
+          }
+        }
+      }
+    },
+    "ShoppingCart": {
+      "x-table": "dbo.ShoppingCarts",
+      "resource": "ShoppingCarts",
+      "required": [
+        "CreatedOn",
+        "UserId"
+      ],
+      "properties": {
+        "Id": {
+          "x-key": true,
+          "x-identity": true,
+          "x-nullable": false,
+          "x-precision": 10,
+          "type": "integer",
+          "x-navigation": [
+            {
+              "inversePropertyName": "ShoppingCart",
+              "name": "ShoppingCartsProducts",
+              "type": "ShoppingCartsProduct"
+            }
+          ]
+        },
+        "CreatedOn": {
+          "x-nullable": false,
+          "type": "string",
+          "format": "date-time",
+          "x-datetime": "datetime2"
+        },
+        "ModifiedOn": {
+          "type": "string",
+          "format": "date-time",
+          "x-datetime": "datetime2"
+        },
+        "UserId": {
+          "x-nullable": false,
+          "type": "string",
+          "length": 450
+        },
+        "ShoppingCartsProducts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ShoppingCartsProduct"
+          }
+        }
+      }
+    },
+    "ShoppingCartsProduct": {
+      "x-table": "dbo.ShoppingCartsProducts",
+      "resource": "ShoppingCartsProducts",
+      "required": [
+        "ShoppingCartId",
+        "ProductId",
+        "CreatedOn",
+        "Quantity"
+      ],
+      "properties": {
+        "ShoppingCart": {
+          "type": "object",
+          "$ref": "#/definitions/ShoppingCart"
+        },
+        "ShoppingCartId": {
+          "x-nullable": false,
+          "x-precision": 10,
+          "type": "integer",
+          "x-key": true,
+          "x-foreignKey": {
+            "parentTable": "ShoppingCarts",
+            "parentEntityType": "ShoppingCart",
+            "type": "ShoppingCart",
+            "principalKey": "Id",
+            "name": "ShoppingCart",
+            "textProperty": "UserId",
+            "navigationProperty": "ShoppingCartsProducts"
+          }
+        },
+        "Product": {
+          "type": "object",
+          "$ref": "#/definitions/Product"
+        },
+        "ProductId": {
+          "x-nullable": false,
+          "x-precision": 10,
+          "type": "integer",
+          "x-key": true,
+          "x-foreignKey": {
+            "parentTable": "Products",
+            "parentEntityType": "Product",
+            "type": "Product",
+            "principalKey": "Id",
+            "name": "Product",
+            "textProperty": "Name",
+            "navigationProperty": "ShoppingCartsProducts"
+          }
+        },
+        "CreatedOn": {
+          "x-nullable": false,
+          "type": "string",
+          "format": "date-time",
+          "x-datetime": "datetime2"
+        },
+        "ModifiedOn": {
+          "type": "string",
+          "format": "date-time",
+          "x-datetime": "datetime2"
+        },
+        "Quantity": {
+          "x-nullable": false,
+          "x-precision": 10,
+          "type": "integer"
+        }
+      }
+    },
+    "Wishlist": {
+      "x-table": "dbo.Wishlists",
+      "resource": "Wishlists",
+      "required": [
+        "CreatedOn",
+        "UserId"
+      ],
+      "properties": {
+        "Id": {
+          "x-key": true,
+          "x-identity": true,
+          "x-nullable": false,
+          "x-precision": 10,
+          "type": "integer",
+          "x-navigation": [
+            {
+              "inversePropertyName": "Wishlist",
+              "name": "WishlistsProducts",
+              "type": "WishlistsProduct"
+            }
+          ]
+        },
+        "CreatedOn": {
+          "x-nullable": false,
+          "type": "string",
+          "format": "date-time",
+          "x-datetime": "datetime2"
+        },
+        "ModifiedOn": {
+          "type": "string",
+          "format": "date-time",
+          "x-datetime": "datetime2"
+        },
+        "UserId": {
+          "x-nullable": false,
+          "type": "string",
+          "length": 450
+        },
+        "WishlistsProducts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/WishlistsProduct"
+          }
+        }
+      }
+    },
+    "WishlistsProduct": {
+      "x-table": "dbo.WishlistsProducts",
+      "resource": "WishlistsProducts",
+      "required": [
+        "WishlistId",
+        "ProductId",
+        "CreatedOn"
+      ],
+      "properties": {
+        "Wishlist": {
+          "type": "object",
+          "$ref": "#/definitions/Wishlist"
+        },
+        "WishlistId": {
+          "x-nullable": false,
+          "x-precision": 10,
+          "type": "integer",
+          "x-key": true,
+          "x-foreignKey": {
+            "parentTable": "Wishlists",
+            "parentEntityType": "Wishlist",
+            "type": "Wishlist",
+            "principalKey": "Id",
+            "name": "Wishlist",
+            "textProperty": "UserId",
+            "navigationProperty": "WishlistsProducts"
+          }
+        },
+        "Product": {
+          "type": "object",
+          "$ref": "#/definitions/Product"
+        },
+        "ProductId": {
+          "x-nullable": false,
+          "x-precision": 10,
+          "type": "integer",
+          "x-key": true,
+          "x-foreignKey": {
+            "parentTable": "Products",
+            "parentEntityType": "Product",
+            "type": "Product",
+            "principalKey": "Id",
+            "name": "Product",
+            "textProperty": "Name",
+            "navigationProperty": "WishlistsProducts"
+          }
+        },
+        "CreatedOn": {
+          "x-nullable": false,
+          "type": "string",
+          "format": "date-time",
+          "x-datetime": "datetime2"
+        },
+        "ModifiedOn": {
+          "type": "string",
+          "format": "date-time",
+          "x-datetime": "datetime2"
+        }
+      }
+    }
+  },
+  "paths": {
+    "/Addresses": {
+      "get": {
+        "operationId": "getAddresses",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "$filter",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$orderby",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$expand",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$top",
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "$skip",
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "$count",
+            "type": "boolean"
+          },
+          {
+            "in": "query",
+            "name": "$format",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "properties": {
+                "value": {
+                  "items": {
+                    "$ref": "#/definitions/Address"
+                  },
+                  "type": "array"
+                }
+              },
+              "type": "object"
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createAddress",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "Address",
+            "schema": {
+              "$ref": "#/definitions/Address"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "schema": {
+              "$ref": "#/definitions/Address"
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/Categories": {
+      "get": {
+        "operationId": "getCategories",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "$filter",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$orderby",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$expand",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$top",
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "$skip",
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "$count",
+            "type": "boolean"
+          },
+          {
+            "in": "query",
+            "name": "$format",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "properties": {
+                "value": {
+                  "items": {
+                    "$ref": "#/definitions/Category"
+                  },
+                  "type": "array"
+                }
+              },
+              "type": "object"
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createCategory",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "Category",
+            "schema": {
+              "$ref": "#/definitions/Category"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "schema": {
+              "$ref": "#/definitions/Category"
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/Orders": {
+      "get": {
+        "operationId": "getOrders",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "$filter",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$orderby",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$expand",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$top",
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "$skip",
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "$count",
+            "type": "boolean"
+          },
+          {
+            "in": "query",
+            "name": "$format",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "properties": {
+                "value": {
+                  "items": {
+                    "$ref": "#/definitions/Order"
+                  },
+                  "type": "array"
+                }
+              },
+              "type": "object"
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createOrder",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "Order",
+            "schema": {
+              "$ref": "#/definitions/Order"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "schema": {
+              "$ref": "#/definitions/Order"
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/OrdersProducts": {
+      "get": {
+        "operationId": "getOrdersProducts",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "$filter",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$orderby",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$expand",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$top",
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "$skip",
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "$count",
+            "type": "boolean"
+          },
+          {
+            "in": "query",
+            "name": "$format",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "properties": {
+                "value": {
+                  "items": {
+                    "$ref": "#/definitions/OrdersProduct"
+                  },
+                  "type": "array"
+                }
+              },
+              "type": "object"
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createOrdersProduct",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "OrdersProduct",
+            "schema": {
+              "$ref": "#/definitions/OrdersProduct"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "schema": {
+              "$ref": "#/definitions/OrdersProduct"
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/Products": {
+      "get": {
+        "operationId": "getProducts",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "$filter",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$orderby",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$expand",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$top",
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "$skip",
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "$count",
+            "type": "boolean"
+          },
+          {
+            "in": "query",
+            "name": "$format",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "properties": {
+                "value": {
+                  "items": {
+                    "$ref": "#/definitions/Product"
+                  },
+                  "type": "array"
+                }
+              },
+              "type": "object"
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createProduct",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "Product",
+            "schema": {
+              "$ref": "#/definitions/Product"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "schema": {
+              "$ref": "#/definitions/Product"
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/ShoppingCarts": {
+      "get": {
+        "operationId": "getShoppingCarts",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "$filter",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$orderby",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$expand",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$top",
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "$skip",
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "$count",
+            "type": "boolean"
+          },
+          {
+            "in": "query",
+            "name": "$format",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "properties": {
+                "value": {
+                  "items": {
+                    "$ref": "#/definitions/ShoppingCart"
+                  },
+                  "type": "array"
+                }
+              },
+              "type": "object"
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createShoppingCart",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "ShoppingCart",
+            "schema": {
+              "$ref": "#/definitions/ShoppingCart"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "schema": {
+              "$ref": "#/definitions/ShoppingCart"
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/ShoppingCartsProducts": {
+      "get": {
+        "operationId": "getShoppingCartsProducts",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "$filter",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$orderby",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$expand",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$top",
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "$skip",
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "$count",
+            "type": "boolean"
+          },
+          {
+            "in": "query",
+            "name": "$format",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "properties": {
+                "value": {
+                  "items": {
+                    "$ref": "#/definitions/ShoppingCartsProduct"
+                  },
+                  "type": "array"
+                }
+              },
+              "type": "object"
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createShoppingCartsProduct",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "ShoppingCartsProduct",
+            "schema": {
+              "$ref": "#/definitions/ShoppingCartsProduct"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "schema": {
+              "$ref": "#/definitions/ShoppingCartsProduct"
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/Wishlists": {
+      "get": {
+        "operationId": "getWishlists",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "$filter",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$orderby",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$expand",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$top",
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "$skip",
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "$count",
+            "type": "boolean"
+          },
+          {
+            "in": "query",
+            "name": "$format",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "properties": {
+                "value": {
+                  "items": {
+                    "$ref": "#/definitions/Wishlist"
+                  },
+                  "type": "array"
+                }
+              },
+              "type": "object"
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createWishlist",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "Wishlist",
+            "schema": {
+              "$ref": "#/definitions/Wishlist"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "schema": {
+              "$ref": "#/definitions/Wishlist"
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/WishlistsProducts": {
+      "get": {
+        "operationId": "getWishlistsProducts",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "$filter",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$orderby",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$expand",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "$top",
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "$skip",
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "$count",
+            "type": "boolean"
+          },
+          {
+            "in": "query",
+            "name": "$format",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "properties": {
+                "value": {
+                  "items": {
+                    "$ref": "#/definitions/WishlistsProduct"
+                  },
+                  "type": "array"
+                }
+              },
+              "type": "object"
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createWishlistsProduct",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "WishlistsProduct",
+            "schema": {
+              "$ref": "#/definitions/WishlistsProduct"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "schema": {
+              "$ref": "#/definitions/WishlistsProduct"
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/Addresses({Id})": {
+      "delete": {
+        "operationId": "deleteAddress",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "Id",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "204": {},
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "getAddressById",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "Id",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/Address"
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "patch": {
+        "operationId": "updateAddress",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "Id",
+            "type": "integer"
+          },
+          {
+            "in": "body",
+            "name": "Address",
+            "schema": {
+              "$ref": "#/definitions/Address"
+            }
+          }
+        ],
+        "responses": {
+          "204": {},
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/Categories({Id})": {
+      "delete": {
+        "operationId": "deleteCategory",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "Id",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "204": {},
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "getCategoryById",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "Id",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/Category"
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "patch": {
+        "operationId": "updateCategory",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "Id",
+            "type": "integer"
+          },
+          {
+            "in": "body",
+            "name": "Category",
+            "schema": {
+              "$ref": "#/definitions/Category"
+            }
+          }
+        ],
+        "responses": {
+          "204": {},
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/Orders('{Id}')": {
+      "delete": {
+        "operationId": "deleteOrder",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "Id",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {},
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "getOrderById",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "Id",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/Order"
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "patch": {
+        "operationId": "updateOrder",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "Id",
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "Order",
+            "schema": {
+              "$ref": "#/definitions/Order"
+            }
+          }
+        ],
+        "responses": {
+          "204": {},
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/OrdersProducts(OrderId='{OrderId}',ProductId={ProductId})": {
+      "delete": {
+        "operationId": "deleteOrdersProduct",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "OrderId",
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "ProductId",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "204": {},
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "getOrdersProductByOrderIdAndProductId",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "OrderId",
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "ProductId",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/OrdersProduct"
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "patch": {
+        "operationId": "updateOrdersProduct",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "OrderId",
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "ProductId",
+            "type": "integer"
+          },
+          {
+            "in": "body",
+            "name": "OrdersProduct",
+            "schema": {
+              "$ref": "#/definitions/OrdersProduct"
+            }
+          }
+        ],
+        "responses": {
+          "204": {},
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/Products({Id})": {
+      "delete": {
+        "operationId": "deleteProduct",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "Id",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "204": {},
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "getProductById",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "Id",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/Product"
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "patch": {
+        "operationId": "updateProduct",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "Id",
+            "type": "integer"
+          },
+          {
+            "in": "body",
+            "name": "Product",
+            "schema": {
+              "$ref": "#/definitions/Product"
+            }
+          }
+        ],
+        "responses": {
+          "204": {},
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/ShoppingCarts({Id})": {
+      "delete": {
+        "operationId": "deleteShoppingCart",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "Id",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "204": {},
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "getShoppingCartById",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "Id",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/ShoppingCart"
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "patch": {
+        "operationId": "updateShoppingCart",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "Id",
+            "type": "integer"
+          },
+          {
+            "in": "body",
+            "name": "ShoppingCart",
+            "schema": {
+              "$ref": "#/definitions/ShoppingCart"
+            }
+          }
+        ],
+        "responses": {
+          "204": {},
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/ShoppingCartsProducts(ShoppingCartId={ShoppingCartId},ProductId={ProductId})": {
+      "delete": {
+        "operationId": "deleteShoppingCartsProduct",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "ShoppingCartId",
+            "type": "integer"
+          },
+          {
+            "in": "path",
+            "name": "ProductId",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "204": {},
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "getShoppingCartsProductByShoppingCartIdAndProductId",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "ShoppingCartId",
+            "type": "integer"
+          },
+          {
+            "in": "path",
+            "name": "ProductId",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/ShoppingCartsProduct"
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "patch": {
+        "operationId": "updateShoppingCartsProduct",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "ShoppingCartId",
+            "type": "integer"
+          },
+          {
+            "in": "path",
+            "name": "ProductId",
+            "type": "integer"
+          },
+          {
+            "in": "body",
+            "name": "ShoppingCartsProduct",
+            "schema": {
+              "$ref": "#/definitions/ShoppingCartsProduct"
+            }
+          }
+        ],
+        "responses": {
+          "204": {},
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/Wishlists({Id})": {
+      "delete": {
+        "operationId": "deleteWishlist",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "Id",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "204": {},
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "getWishlistById",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "Id",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/Wishlist"
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "patch": {
+        "operationId": "updateWishlist",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "Id",
+            "type": "integer"
+          },
+          {
+            "in": "body",
+            "name": "Wishlist",
+            "schema": {
+              "$ref": "#/definitions/Wishlist"
+            }
+          }
+        ],
+        "responses": {
+          "204": {},
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/WishlistsProducts(WishlistId={WishlistId},ProductId={ProductId})": {
+      "delete": {
+        "operationId": "deleteWishlistsProduct",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "WishlistId",
+            "type": "integer"
+          },
+          {
+            "in": "path",
+            "name": "ProductId",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "204": {},
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "getWishlistsProductByWishlistIdAndProductId",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "WishlistId",
+            "type": "integer"
+          },
+          {
+            "in": "path",
+            "name": "ProductId",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/WishlistsProduct"
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "patch": {
+        "operationId": "updateWishlistsProduct",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "WishlistId",
+            "type": "integer"
+          },
+          {
+            "in": "path",
+            "name": "ProductId",
+            "type": "integer"
+          },
+          {
+            "in": "body",
+            "name": "WishlistsProduct",
+            "schema": {
+              "$ref": "#/definitions/WishlistsProduct"
+            }
+          }
+        ],
+        "responses": {
+          "204": {},
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    }
+  },
+  "basePath": "/odata/net5wasmconn",
+  "host": "localhost:5001",
+  "schemes": [
+    "https"
+  ]
+}

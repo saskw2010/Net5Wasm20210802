@@ -1,0 +1,88 @@
+﻿@inherits Net5Wasm.Layouts.MainLayoutComponent
+
+@using Radzen
+@using Radzen.Blazor
+@using Net5Wasm.Models.Net5Wasmconn
+@using Microsoft.AspNetCore.Identity;
+@using Net5Wasm.Models
+@inject Microsoft.Extensions.Localization.IStringLocalizer<MainLayout> L
+<RadzenDialog />
+<RadzenNotification />
+<RadzenTooltip />
+<RadzenContextMenu />
+
+<RadzenHeader>
+  <ChildContent>
+    <div class="row justify-content-start align-items-center">
+      <div class="col-6 d-flex align-items-center">
+        <RadzenSidebarToggle Click="@SidebarToggle0Click">
+        </RadzenSidebarToggle>
+        <RadzenLabel Text="@L["label0.Text"]">
+        </RadzenLabel>
+      </div>
+      <div class="col-6 text-right" style="height: 36px">
+        <RadzenDropDown Data="@(new[] { new { Text="Arabic - Kuwait", Value="ar-KW" },new { Text="English - United States", Value="en-US" },new { Text="French - Canada", Value="fr-CA" },new { Text="Italian - Italy", Value="it-IT" },new { Text="Spanish - Spain", Value="es-ES" },new { Text="Chinese (Simplified)", Value="zh-CHS" },new { Text="Turkish - Turkey", Value="tr-TR" }})" style="height: 36px" TextProperty="Text" @bind-Value="@Culture" ValueProperty="Value" Name="Dropdown0" Change="@Dropdown0Change">
+        </RadzenDropDown>
+        <RadzenProfileMenu style="height: 36px; margin-top: 0px" Visible="@(Security.IsAuthenticated())" Click="@Profilemenu0Click">
+          <ChildContent>
+            <RadzenProfileMenuItem Path="profile" Icon="settings" Text="@L["profilemenu0.profile.Text"]" Visible="@Security.IsInRole(new string[]{"Authenticated"})">
+            </RadzenProfileMenuItem>
+            <RadzenProfileMenuItem Path="application-users" Icon="person" Text="@L["profilemenu0.users.Text"]" Visible="@Security.IsInRole(new string[]{"Authenticated"})">
+            </RadzenProfileMenuItem>
+            <RadzenProfileMenuItem Path="application-roles" Icon="security" Text="@L["profilemenu0.roles.Text"]" Visible="@Security.IsInRole(new string[]{"Authenticated"})">
+            </RadzenProfileMenuItem>
+            <RadzenProfileMenuItem Text="@L["profilemenu0.logout.Text"]" Value="Logout" Icon="power_settings_new">
+            </RadzenProfileMenuItem>
+          </ChildContent>
+          <Template>
+            <RadzenLabel Text="@($"{(Security.User?.Name)}")">
+            </RadzenLabel>
+          </Template>
+        </RadzenProfileMenu>
+      </div>
+    </div>
+  </ChildContent>
+</RadzenHeader>
+<RadzenBody @ref="body0">
+  <ChildContent>
+    <RadzenContentContainer Name="main">
+    @Body
+    </RadzenContentContainer>
+  </ChildContent>
+</RadzenBody>
+<RadzenSidebar @ref="sidebar0">
+  <ChildContent>
+    <RadzenPanelMenu style="height: 100%">
+      <ChildContent>
+        <RadzenPanelMenuItem Path="addresses" Text="@L["panelmenu0.addresses.Text"]" Visible="@Security.IsInRole(new string[]{"Everybody"})">
+        </RadzenPanelMenuItem>
+        <RadzenPanelMenuItem Path="categories" Text="@L["panelmenu0.categories.Text"]" Visible="@Security.IsInRole(new string[]{"Everybody"})">
+        </RadzenPanelMenuItem>
+        <RadzenPanelMenuItem Path="orders" Text="@L["panelmenu0.orders.Text"]" Visible="@Security.IsInRole(new string[]{"Everybody"})">
+        </RadzenPanelMenuItem>
+        <RadzenPanelMenuItem Path="orders-products" Text="@L["panelmenu0.orders-products.Text"]" Visible="@Security.IsInRole(new string[]{"Everybody"})">
+        </RadzenPanelMenuItem>
+        <RadzenPanelMenuItem Path="products" Text="@L["panelmenu0.products.Text"]" Visible="@Security.IsInRole(new string[]{"Everybody"})">
+        </RadzenPanelMenuItem>
+        <RadzenPanelMenuItem Path="shopping-carts" Text="@L["panelmenu0.shopping-carts.Text"]" Visible="@Security.IsInRole(new string[]{"Everybody"})">
+        </RadzenPanelMenuItem>
+        <RadzenPanelMenuItem Path="shopping-carts-products" Text="@L["panelmenu0.shopping-carts-products.Text"]" Visible="@Security.IsInRole(new string[]{"Everybody"})">
+        </RadzenPanelMenuItem>
+        <RadzenPanelMenuItem Path="wishlists" Text="@L["panelmenu0.wishlists.Text"]" Visible="@Security.IsInRole(new string[]{"Everybody"})">
+        </RadzenPanelMenuItem>
+        <RadzenPanelMenuItem Path="wishlists-products" Text="@L["panelmenu0.wishlists-products.Text"]" Visible="@Security.IsInRole(new string[]{"Everybody"})">
+        </RadzenPanelMenuItem>
+        <RadzenPanelMenuItem Icon="cloud_upload" Path="uploadfilesandsave" Text="@L["panelmenu0.uploadfilesandsave.Text"]" Visible="@Security.IsInRole(new string[]{"Everybody"})">
+        </RadzenPanelMenuItem>
+        <RadzenPanelMenuItem Icon="perm_media" Path="uploadpage" Target="_self" Text="@L["panelmenu0.uploadpage.Text"]">
+        </RadzenPanelMenuItem>
+      </ChildContent>
+    </RadzenPanelMenu>
+  </ChildContent>
+</RadzenSidebar>
+<RadzenFooter>
+  <ChildContent>
+    <RadzenLabel Text="@L["footerText.Text"]">
+    </RadzenLabel>
+  </ChildContent>
+</RadzenFooter>

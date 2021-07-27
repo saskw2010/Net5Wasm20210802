@@ -1,0 +1,29 @@
+﻿@page "/login"
+@layout LoginLayout
+@inherits Net5Wasm.Pages.LoginComponent
+
+@using Radzen
+@using Radzen.Blazor
+@using Net5Wasm.Models.Net5Wasmconn
+@using Microsoft.AspNetCore.Identity;
+@using Net5Wasm.Models
+@using Microsoft.AspNetCore.Authorization
+
+
+@inject Microsoft.Extensions.Localization.IStringLocalizer<Login> L
+<RadzenContent Container="main">
+  <ChildContent>
+    <RadzenHeading Size="H1" Text="@L["pageTitle.Text"]">
+    </RadzenHeading>
+    <div class="row">
+      <div class="col-md-12">
+        <RadzenTemplateForm Action="account/login" Data="@("login")" Method="post">
+          <ChildContent>
+            <RadzenLogin AllowResetPassword="false" Register="@Login0Register">
+            </RadzenLogin>
+          </ChildContent>
+        </RadzenTemplateForm>
+      </div>
+    </div>
+  </ChildContent>
+</RadzenContent>

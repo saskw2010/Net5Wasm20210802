@@ -1,0 +1,31 @@
+{
+  "access": "Authenticated",
+  "components": [
+    {
+      "components": [
+        {
+          "name": "pageTitle",
+          "size": "H1",
+          "text": "uploadfilesandsave",
+          "type": "heading"
+        },
+        {
+          "chooseText": "upload image ",
+          "events": {
+            "change": []
+          },
+          "name": "InputFile",
+          "style": {
+            "width": "693.609375px"
+          },
+          "type": "file-input",
+          "value": ""
+        }
+      ],
+      "container": "main",
+      "type": "content"
+    }
+  ],
+  "layout": "Main",
+  "name": "uploadfilesandsave"
+}
